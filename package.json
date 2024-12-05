@@ -5,6 +5,7 @@
 	"dependencies": {
 		"@stripe/react-stripe-js": "^1.1.2",
 		"@stripe/stripe-js": "^1.11.0",
+		"@vitejs/plugin-react": "^4.3.4",
 		"animate.css": "^3.7.2",
 		"axios": "^0.21.1",
 		"bootstrap": "4.5.0",
@@ -14,7 +15,6 @@
 		"node-fetch": "2.6.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.6.0",
-		"react-dom": "^16.6.0",
 		"react-app-polyfill": "^1.0.4",
 		"react-bootstrap": "1.0.1",
 		"react-bootstrap-sweetalert": "^5.2.0",
@@ -23,6 +23,7 @@
 		"react-countdown-now": "^2.1.2",
 		"react-countup": "^4.2.3",
 		"react-custom-scrollbars-2": "^4.4.0",
+		"react-dom": "^16.6.0",
 		"react-fullpage": "^0.1.19",
 		"react-geocode": "^0.2.2",
 		"react-hook-form": "^6.13.1",
@@ -35,7 +36,6 @@
 		"react-paginate": "^7.0.0",
 		"react-redux": "^7.1.3",
 		"react-router-dom": "^5.1.2",
-		"react-scripts": "^4.0.1",
 		"react-scroll": "^1.7.14",
 		"react-spinners": "^0.9.0",
 		"react-star-ratings": "^2.3.0",
@@ -49,15 +49,13 @@
 		"redux-thunk": "^2.3.0",
 		"swiper": "^5.4.1",
 		"universal-cookie": "^4.0.4",
-		"uuid": "^3.3.3"
+		"uuid": "^3.3.3",
+		"vite": "^6.0.1"
 	},
 	"scripts": {
-		"dev": "react-scripts start",
-		"intergartion": "chmod +x ./env.sh && ./env.sh && cp env-config.js ./public/ && react-scripts start",
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"start": "vite",  
+		"build": "vite build",  
+		"preview": "vite preview"  
 	},
 	"eslintConfig": {
 		"extends": "react-app"

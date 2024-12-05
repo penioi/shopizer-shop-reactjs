@@ -25,7 +25,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
 
   const getProductDetails = async () => {
     setLoader(true)
-    let action = constant.ACTION.PRODUCTS + productID + '?lang=' + currentLanguageCode + '&store=' + defaultStore;
+    let action = constant.ACTION.PRODUCT + productID + '?lang=' + currentLanguageCode + '&store=' + defaultStore;
     try {
       let response = await WebService.get(action);
       if (response) {
@@ -57,8 +57,8 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
         />
       </MetaTags>
 
-      <BreadcrumbsItem to={process.env.PUBLIC_URL + "/"}>{strings["Home"]}</BreadcrumbsItem>
-      <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>
+      <BreadcrumbsItem to={import.meta.env.PUBLIC_URL + "/"}>{strings["Home"]}</BreadcrumbsItem>
+      <BreadcrumbsItem to={import.meta.env.PUBLIC_URL + pathname}>
         {productDetails && productDetails.description.name}
       </BreadcrumbsItem>
 

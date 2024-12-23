@@ -23,8 +23,10 @@ const Home = ({ merchant, strings }) => {
         headerPaddingClass="header-padding-2"
         headerTop="visible"
       >
-        {/* hero slider */}
-        <HeroSlider string={strings} />
+        {/* hero slider 
+        <HeroSlider string={strings} />*/}
+        <h1 style={{padding : "40px"}}>the materialist is a marketplace for deadstock fabrics that connects fashion houses, designers and other visionaries with high-end suppliers' excess inventories.
+        the materialist inspires and accelerates a new ecosystem for circular textiles and materials.</h1>
         {/* promos */}
         <Promo
           bgImg=""
@@ -36,7 +38,7 @@ const Home = ({ merchant, strings }) => {
         
         {/* tab product */}
         <TabProduct
-          category="fashion"
+          category="dead_stock_fabrics"
           spaceBottomClass="pb-100"
           spaceTopClass="pt-100"
         />

@@ -15,6 +15,7 @@ import WebService from '../../util/webService';
 import constant from '../../util/constant';
 import { setLoader } from "../../redux/actions/loaderActions";
 import StarRatings from 'react-star-ratings';
+import PropertiesBlock from "./sub-components/PropertiesBlock";
 function ProductModal(props, strings) {
   const { product, cartData, defaultStore, userData, finalproductprice, finaldiscountedprice, setLoader } = props;
 
@@ -238,21 +239,26 @@ function ProductModal(props, strings) {
                 <div className="pro-details-list">
                   <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                   <ul>
-                    <li>
-                      <span>Weight</span> {product.productSpecifications.weight} Pounds
-                    </li>
-                    {
+                     
+                    {product.productSpecifications.length && 
                       <li>
                         <span>{strings["Package size"]}</span>{product.productSpecifications.length}{" "} x {product.productSpecifications.width}{" "}
                         x {product.productSpecifications.height} Inches{" "}
                       </li>
                     }
                     {
-                      product.properties.map((value, i) => {
-                        return <li key={i}>
-                          <span><b>{value.property.name}</b></span> {value.propertyValue.name}
-                        </li>
-                      })
+                      <Fragment>
+                        <PropertiesBlock title="Technical Information"
+                          show={["construction", "main_material", "compostion"]} data={product.properties}
+                        ></PropertiesBlock>
+                        <PropertiesBlock title="Classifications"
+                          show={["drape"]} data={product.properties}
+                        ></PropertiesBlock>
+                        <PropertiesBlock title="Sustainability Credentials"
+                        show={["sustainability_credentials"]} data={product.properties}
+                      ></PropertiesBlock>
+                      </Fragment>
+
                     }
                   </ul>
                 </div>
@@ -361,8 +367,8 @@ function ProductModal(props, strings) {
                     }
                   </div>
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
                 {
                   //   product.affiliateLink ? (
                   //   <div className="pro-details-quality">
@@ -409,8 +415,8 @@ function ProductModal(props, strings) {
                           }
                           }>{/* {strings["Add to cart"]} */} Add to cart</button>
                       ) : (
-                          <button disabled>Out of Stock</button>
-                        )}
+                        <button disabled>Out of Stock</button>
+                      )}
                     </div>
                     {/* <div className="pro-details-wishlist">
                         <button

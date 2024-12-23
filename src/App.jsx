@@ -10,6 +10,8 @@ import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
 import Loader from "./components/loader/loader"
 import Cookie from "./components/consent/Cookie"
 import Cookies from 'universal-cookie';
+import en from './translations/english.json';
+import fr from './translations/french.json';
 
 
 import {
@@ -67,8 +69,7 @@ const App = (props) => {
     props.dispatch(
       loadLanguages({
         languages: { //from merchant supported languages
-          en: await import("./translations/english.json"),
-          fr: await import("./translations/french.json")
+          en, fr
         }
       })
     )};

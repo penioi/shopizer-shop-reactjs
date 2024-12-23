@@ -9,11 +9,13 @@ const HeroSlider = ({ string }) => {
   return (
     <div className="site-blocks-cover">
       <div className="container">
-        <HeroSliderStatic
+      <h1>the materialist is a marketplace for deadstock fabrics that connects fashion houses, designers and other visionaries with high-end suppliers' excess inventories.
+      the materialist inspires and accelerates a new ecosystem for circular textiles and materials.</h1>
+        {/* <HeroSliderStatic
           pitch1={string["Pitch1"]}
           pitch2={string["Pitch2"]}
           pitch3={string["Shop now"]}
-        />
+        /> */}
       </div>
     </div>
   );

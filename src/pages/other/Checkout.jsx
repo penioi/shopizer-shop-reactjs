@@ -20,9 +20,9 @@ import {
 } from '@stripe/react-stripe-js';
 import { useToasts } from "react-toast-notifications";
 import { setLoader } from "../../redux/actions/loaderActions";
-// import {
-//   deleteAllFromCart
-// } from "../../redux/actions/cartActions";
+import {
+  deleteAllFromCart
+} from "../../redux/actions/cartActions";
 import Script from 'react-load-script';
 import { multilanguage } from "redux-multilanguage";
 
@@ -255,7 +255,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
   const [selectedOptions, setSelectedOptions] = useState('');
   const [deliveryData, setDeliveryData] = useState();
   const [agreementData, setAgreementData] = useState('');
-  const { register, control, handleSubmit, errors, setValue, watch, reset, setError, clearErrors, formState} = useForm({
+  const { register, control, handleSubmit, errors, setValue, watch, reset, setError, clearErrors, formState } = useForm({
     mode: "onChange",
     criteriaMode: "all"
   });
@@ -507,8 +507,8 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
   }
   const onSubmitOrder = async (data, elements, stripe, paymentMethod) => {
     setLoader(true)
-    
-    if(paymentMethod === "INVOICE") {
+
+    if (paymentMethod === "INVOICE") {
       return onPayment(data, null, paymentMethod);
     }
 
@@ -616,9 +616,9 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
       // console.log(response)
       if (response) {
         reset({})
-        ref.clear()
+        ref?.clear()
         deleteAllFromCart(response.id)
-        setLocalData('order-email', data.email)
+        // setLocalData('order-email', data?.email)
         addToast("Your order has been submitted", { appearance: "success", autoDismiss: true });
         history.push('/order-confirm')
       }
@@ -627,7 +627,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
       if (isAccount) {
         addToast("Registering customer already exist", { appearance: "error", autoDismiss: true });
       } else {
-        addToast("Your order submission has been failed", { appearance: "error", autoDismiss: true });
+        addToast("Your order submission has failed", { appearance: "error", autoDismiss: true });
       }
       setLoader(false)
     }
@@ -635,16 +635,16 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
   }
 
   const createPayment = (data, result, paymentType) => {
-    if(paymentType === "INVOICE") {
+    if (paymentType === "INVOICE") {
       return {
-        "paymentType":  "INVOICE",
-        "transactionType" : "AUTHORIZECAPTURE",
+        "paymentType": "INVOICE",
+        "transactionType": "AUTHORIZECAPTURE",
         "paymentModule": "moneyorder",
         "amount": shippingQuote[shippingQuote.length - 1].value
       }
-    } 
+    }
     return {
-      "paymentType":  "CREDITCARD",
+      "paymentType": "CREDITCARD",
       "transactionType": "CAPTURE",
       "paymentModule": "stripe",
       "paymentToken": result.token,
@@ -1290,7 +1290,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                               </div>
                             }
 
-                          </div> 
+                          </div>
                           <button type="button" onClick={handleSubmit((d) => onSubmitOrder(null, null, null, "INVOICE"))} className="btn-hover">{strings["Place your order"]}</button>
                         </div>
                       }
@@ -1361,7 +1361,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(getShippingState(code));
     },
     deleteAllFromCart: (orderID) => {
-      //dispatch(deleteAllFromCart(orderID));
+      dispatch(deleteAllFromCart(orderID));
     },
   };
 };

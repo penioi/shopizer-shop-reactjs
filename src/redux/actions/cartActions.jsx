@@ -21,7 +21,6 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, u
       let param;
       let response;
       let message;
-      console.log('Item ' + item.sku + " quantity " + quantityCount);
       if (selectedProductOptions !== undefined) {
         param = { "attributes": selectedProductOptions, "product": item.sku, "quantity": quantityCount }
       } else {
@@ -127,7 +126,6 @@ export const getShopizerCartID = () => {
 
 //decrease from cart
 export const decreaseQuantity = (item, addToast) => {
-  console.log('decrease ' + JSON.stringify(item));
   return dispatch => {
     // if (addToast) {
     //   addToast("Item Decremented From Cart", {
@@ -141,7 +139,6 @@ export const decreaseQuantity = (item, addToast) => {
 };
 
 export const increaseQuantity = (item, addToast) => {
-  console.log('increase ' + JSON.stringify(item));
   return dispatch => {
     // if (addToast) {
     //   addToast("Item Decremented From Cart", {

@@ -388,7 +388,7 @@ function ProductModal(props, strings) {
                       <button onClick={() => setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)} className="dec qtybutton">
                         -
                       </button>
-                      <input className="cart-plus-minus-box" type="text" value={quantityCount} readOnly />
+                      <input className="cart-plus-minus-box" type="text" value={quantityCount}   />
                       <button onClick={() => setQuantityCount(quantityCount < product.quantity ? quantityCount + 1 : quantityCount)} className="inc qtybutton" >
                         +
                       </button>

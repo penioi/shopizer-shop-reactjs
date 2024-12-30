@@ -286,7 +286,7 @@ const Cart = ({
                                     <input className="cart-plus-minus-box" onChange={() => getValue()} type="text" value={cartItem.quantity} />
                                     <button className="inc qtybutton" onClick={() => increaseQuantity(cartItem, cartID, cartItem.quantity + 1, addToast)}>+</button> */}
                                     <button className="dec qtybutton" onClick={() => decreaseQuantity(cartItem, addToast, cartItems.code, cartItem.quantity - 1, defaultStore)} > - </button>
-                                    <input className="cart-plus-minus-box" type="text" value={cartItem.quantity} readOnly />
+                                    <input className="cart-plus-minus-box" type="text" value={cartItem.quantity} />
                                     <button className="inc qtybutton" onClick={() => increaseQuantity(cartItem, addToast, cartItems.code, cartItem.quantity + 1, defaultStore)}>+</button>
 
                                   </div>

@@ -278,7 +278,6 @@ const ProductDescriptionInfo = ({
               className="cart-plus-minus-box"
               type="text"
               value={quantityCount}
-              readOnly
             />
             <button onClick={() => setQuantityCount(quantityCount < product.quantity ? quantityCount + 1 : quantityCount)} className="inc qtybutton">+</button>
           </div>

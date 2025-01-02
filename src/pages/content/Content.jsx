@@ -51,7 +51,7 @@ const Content = ({ strings, contentID, setLoader, currentLanguageCode }) => {
                 headerPaddingClass="header-padding-2"
                 headerTop="visible">
                 {/* breadcrumb */}
-                <Breadcrumb />
+                {/* <Breadcrumb /> */}
                 <div className="cart-main-area pt-90 pb-100">
                     <div className="container">
                         {

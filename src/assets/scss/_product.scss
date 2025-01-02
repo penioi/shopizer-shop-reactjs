@@ -1,4 +1,12 @@
 /*------- 6. Product style  --------*/
+
+.product-content h3 {
+  font-weight: 100;
+}
+
+.product-price span {
+  font-size: 24px;
+}
 .product-area {
   position: relative;
 
@@ -453,41 +461,7 @@
       }
     }
 
-    .product-price {
-      span {
-        font-size: 15px;
-        font-weight: 500;
 
-        position: relative;
-
-        margin: 0 9px;
-
-        color: #000;
-
-        &::before {
-          position: absolute;
-          top: 10px;
-          right: -13px;
-
-          width: 7px;
-          height: 2px;
-
-          content: "";
-
-          background-color: #000;
-        }
-
-        &:last-child:before {
-          display: none;
-        }
-
-        &.old {
-          text-decoration: line-through;
-
-          color: #8e8e8e;
-        }
-      }
-    }
   }
 
   &:hover .hover-img {
@@ -2859,57 +2833,8 @@
       }
     }
 
-    .product-price {
-      margin-bottom: 10px;
-      margin-left: -8px;
-
-      span {
-        font-size: 18px;
-
-        position: relative;
-
-        margin: 0 8px;
-
-        color: #000000;
-
-        &:before {
-          position: absolute;
-          top: 10px;
-          right: -13px;
-
-          width: 6px;
-          height: 2px;
-
-          content: "";
-
-          background-color: #a5a5a5;
-        }
-
-        &:last-child:before {
-          display: none;
-        }
-
-        &.old {
-          text-decoration: line-through;
-
-          color: #fed700;
-        }
-      }
-    }
-
-    .product-rating {
-      margin-bottom: 15px;
-
-      i {
-        font-size: 17px;
-
-        margin-right: 3px;
-
-        &.yellow {
-          color: #ffa900;
-        }
-      }
-    }
+ 
+  
 
     .product-action {
       display: flex;
@@ -3226,43 +3151,6 @@
       }
     }
 
-    .product-price {
-      margin-bottom: 10px;
-      margin-left: -8px;
-
-      span {
-        font-size: 18px;
-
-        position: relative;
-
-        margin: 0 8px;
-
-        color: #000000;
-
-        &:before {
-          position: absolute;
-          top: 10px;
-          right: -13px;
-
-          width: 6px;
-          height: 2px;
-
-          content: "";
-
-          background-color: #a5a5a5;
-        }
-
-        &:last-child:before {
-          display: none;
-        }
-
-        &.old {
-          text-decoration: line-through;
-
-          color: #ff0000;
-        }
-      }
-    }
 
     .product-rating {
       margin-bottom: 15px;
@@ -3332,13 +3220,7 @@
         }
       }
 
-      .product-price {
-        span {
-          &.old {
-            color: #bca487;
-          }
-        }
-      }
+  
 
       .product-action {
         .pro-same-action {

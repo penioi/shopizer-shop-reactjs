@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 const Logo = ({ imageUrl, logoClass }) => {
   return (
     <div className={`${logoClass ? logoClass : ""}`}>
-      <Link to={import.meta.env.PUBLIC_URL + "/"}>
-        <img alt="" src={import.meta.env.PUBLIC_URL + imageUrl} />
+      <Link to="/">
+        <img alt="Margarita" src={imageUrl} />
       </Link>
     </div>
   );

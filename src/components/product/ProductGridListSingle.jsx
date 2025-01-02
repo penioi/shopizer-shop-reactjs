@@ -90,34 +90,35 @@ const ProductGridListSingle = ({
             </div>
           </div>
           <div className="product-content text-center">
-            <h3>
-              <Link to={"/product/" + product.id} onClick={() => onClickProductDetails(product.id)}>
-                {product.description.name}
-              </Link>
-            </h3>
-            <div className="product-rating">
-              <StarRatings
-                rating={product.rating}
-                starRatedColor="#ffa900"
-                starDimension="17px"
-                starSpacing="1px"
-                numberOfStars={5}
-                name='view-rating'
-              />
-              {/* <Rating ratingValue={product.rating} /> */}
+            
+            <div className="d-flex  justify-content-between">
+               
+                  <h3>
+                    <Link to={"/product/" + product.id} onClick={() => onClickProductDetails(product.id)}>
+                      {product.description.name}
+                    </Link>
+                  </h3>
+                  <div><img src="https://www.thematerialist.co/sp/decorations/layout/fabricsociety/images/icons/icon-star.svg" width="15"/></div>
+                </div>
+      
+            <div className="d-flex  justify-content-between">
+                <div>
+                  {product.quantity}m available
+                </div>
+                <div className="product-price">
+                  {product.discounted ? (
+                    <Fragment>
+                      <span>{finalDiscountedPrice}</span>{" "}
+                      <span className="old">
+                        {finalProductPrice}
+                      </span>
+                    </Fragment>
+                  ) : (
+                      <span>{finalProductPrice}/m </span>
+                    )}
+                </div>
             </div>
-            <div className="product-price">
-              {product.discounted ? (
-                <Fragment>
-                  <span>{finalDiscountedPrice}</span>{" "}
-                  <span className="old">
-                    {finalProductPrice}
-                  </span>
-                </Fragment>
-              ) : (
-                  <span>{finalProductPrice} </span>
-                )}
-            </div>
+            
           </div>
         </div>
         <div className="shop-list-wrap mb-30">
@@ -150,12 +151,17 @@ const ProductGridListSingle = ({
               </div>
             </div>
             <div className="col-xl-8 col-md-7 col-sm-6">
+              
               <div className="shop-list-content">
-                <h3>
-                  <Link to={"/product/" + product.id} onClick={() => onClickProductDetails(product.id)}>
-                    {product.description.name}
-                  </Link>
-                </h3>
+                <div className="d-flex  justify-content-between">
+                  <h3>
+                    <Link to={"/product/" + product.id} onClick={() => onClickProductDetails(product.id)}>
+                      {product.description.name}
+                    </Link>
+                  </h3>
+                  <div><img src="https://www.thematerialist.co/sp/decorations/layout/fabricsociety/images/icons/icon-star.svg" width="15"/></div>
+                </div>
+               
                 <div className="product-list-price">
                   {product.discounted ? (
                     <Fragment>
@@ -170,19 +176,7 @@ const ProductGridListSingle = ({
                       <span>{finalProductPrice} </span>
                     )}
                 </div>
-                <div className="rating-review">
-                  <div className="product-list-rating">
-                    <StarRatings
-                      rating={product.rating}
-                      starRatedColor="#ffa900"
-                      starDimension="17px"
-                      starSpacing="1px"
-                      numberOfStars={5}
-                      name='view-rating'
-                    />
-                    {/* <Rating ratingValue={product.rating} /> */}
-                  </div>
-                </div>
+                
                 <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                 <div className="shop-list-actions d-flex align-items-center">
                   <div className="shop-list-btn btn-hover">

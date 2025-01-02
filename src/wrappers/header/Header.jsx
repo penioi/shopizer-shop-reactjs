@@ -27,22 +27,13 @@ const Header = ({
   currentLanguageCode
 }) => {
   const history = useHistory();
-  const [scroll, setScroll] = useState(0);
-  const [headerTop, setHeaderTop] = useState(0);
+
   const [categoryData, setCategoryData] = useState([]);
   const [contentData, setContentData] = useState([]);
 
   useEffect(() => {
     checkServerHealth();
 
-    const header = document.querySelector(".sticky-bar");
-    setHeaderTop(header.offsetTop);
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const checkServerHealth = async () => {
 
@@ -104,38 +95,23 @@ const Header = ({
 
   return (
     <header
-      className={`header-area clearfix ${headerBgClass ? headerBgClass : ""} ${headerPositionClass ? headerPositionClass : ""}`}>
-      <div
-        className={`${headerPaddingClass ? headerPaddingClass : ""} ${
-          top === "visible" ? "d-none d-lg-block" : "d-none"} header-top-area ${
-          borderStyle === "fluid-border" ? "border-none" : ""}`}>
-        <div className={layout === "container-fluid" ? layout : "container"}>
-          {/* header top */}
-          <HeaderTop borderStyle={borderStyle} />
-        </div>
-      </div>
-
-      <div
-        className={`${
-          headerPaddingClass ? headerPaddingClass : ""
-          } sticky-bar header-res-padding clearfix ${
-          scroll > headerTop ? "stick" : ""
-          }`}
-      >
-        <div className={layout === "container-fluid" ? layout : "container"}>
+      className={`header-area clearfix d-flex align-items-center`}>
+  
+     
+        <div className= "container">
           <div className="row">
-            <div className="col-xl-2 col-lg-2 col-md-6 col-4">
+            <div className="col-xl-2 col-lg-2 col-md-6 col-8 d-flex align-items-center">
               {/* header logo */}
               {
-                merchant.logo != null && <Logo imageUrl={merchant.logo.path} logoClass="logo" />
+                <Logo imageUrl="https://www.thematerialist.co/sp/decorations/layout/fabricsociety/images/logo.png" logoClass="logo" />
               }
 
             </div>
-            <div className="col-xl-8 col-lg-8 d-none d-lg-block">
+            <div className="nav-menu d-none d-lg-block col-xl-8 col-lg-8 align-items-center">
               {/* Nav menu */}
               <NavMenu categories={categoryData} contents={contentData} />
             </div>
-            <div className="col-xl-2 col-lg-2 col-md-6 col-8">
+            <div className="col-xl-2 col-lg-2 col-md-6 col-4 d-flex align-items-center justify-content-end">
               {/* Icon group */}
               <IconGroup />
             </div>
@@ -143,7 +119,7 @@ const Header = ({
         </div>
         {/* mobile menu */}
         <MobileMenu categories={categoryData} contents={contentData} />
-      </div>
+      
     </header>
   );
 };

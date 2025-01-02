@@ -179,19 +179,18 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                 headerPaddingClass="header-padding-2"
                 headerTop="visible">
                 {/* breadcrumb */}
-                <Breadcrumb />
+                {/* <Breadcrumb /> */}
 
                 <div className="shop-area pt-95 pb-100">
                     <div className="container">
                         {
                             productData.length > 0 ?
                                 (<div className="row">
-                                    <div className="col-lg-3 order-2 order-lg-1">
                                         {/* shop sidebar */}
                                         {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
-                                        <ShopSidebar string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" />
-                                    </div>
-                                    <div className="col-lg-9 order-1 order-lg-2">
+                                        {/* <ShopSidebar string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" /> */}
+                                    
+                                    <div className="col-12">
                                         {/* shop topbar default */}
                                         {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
                                         <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} />

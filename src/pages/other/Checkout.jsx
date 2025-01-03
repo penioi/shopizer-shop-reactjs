@@ -869,27 +869,14 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-select mb-20">
                             <label>{strings["State"]}</label>
-                            {
-                              stateData && stateData.length > 0 ?
-                                <Controller
-                                  name={paymentForm.stateProvince.name}
-                                  control={control}
-                                  rules={paymentForm.stateProvince.validate}
-                                  render={props => {
-                                    return (
-                                      <select onBlur={changeAddress()} onChange={(e) => props.onChange(e.target.value)} value={props.value}>
-                                        <option>{strings["State / province"]}</option>
-                                        {
-                                          stateData.map((data, i) => {
-                                            return <option key={i} value={data.code}>{data.name}</option>
-                                          })
-                                        }
-                                      </select>)
-                                  }}
-                                />
-                                :
-                                <input type="text" name={paymentForm.stateProvince.name} ref={register(paymentForm.stateProvince.validate)} />
-                            }
+                            <select onBlur={changeAddress()} onChange={(e) => props.onChange(e.target.value)} value={props.value}>
+                              <option>{strings["State / province"]}</option>
+                              {
+                                stateData.map((data, i) => {
+                                  return <option key={i} value={data.code}>{data.name}</option>
+                                })
+                              }
+                            </select>
                             {errors[paymentForm.stateProvince.name] && <p className="error-msg">{errors[paymentForm.stateProvince.name].message}</p>}
 
                           </div>

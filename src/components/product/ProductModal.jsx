@@ -128,24 +128,8 @@ function ProductModal(props, strings) {
       tempSelectedOptions = temp;
       setSelectedProductColor(temp)
     }
-    getPrice(tempSelectedOptions)
   }
-  const getPrice = async (tempSelectedOptions) => {
-    setLoader(true)
-    let action = constant.ACTION.PRODUCT + product.id + '/' + constant.ACTION.PRICE;
-    let param = { "options": tempSelectedOptions }
-    try {
-      let response = await WebService.post(action, param);
-      if (response) {
-        setDiscountedPrice(response.finalPrice);
-        setProductPrice(response.originalPrice);
-        setIsDiscount(response.discounted);
-        setLoader(false)
-      }
-    } catch (error) {
-      setLoader(false)
-    }
-  }
+
   const checkedOrNot = (value) => {
     let index = selectedProductColor.findIndex(a => a.id === value.id);
     if (index === -1) {

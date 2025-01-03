@@ -35,11 +35,12 @@ const ProductDescriptionInfo = ({
   const [productPrice, setProductPrice] = useState(finalProductPrice)
   const [isDiscount, setIsDiscount] = useState(product.discounted)
   const [selectedProductColor, setSelectedProductColor] = useState([])
-  const [quantityCount, setQuantityCount] = useState(1);
+  const [quantityCount, setQuantityCount] = useState(product.quantityOrderMinimum || 10);
+  
   useEffect(() => {
     // console.log(strings);
     getDefualtsOption()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
   }, []);
 
   const getDefualtsOption = async () => {
@@ -53,7 +54,7 @@ const ProductDescriptionInfo = ({
         })
       })
       setSelectedProductColor(temp)
-      getPrice(temp)
+      // getPrice(temp)
     }
   }
 
@@ -85,27 +86,9 @@ const ProductDescriptionInfo = ({
       setSelectedProductColor(temp)
     }
     // console.log(tempSelectedOptions);
-    getPrice(tempSelectedOptions)
 
   }
-  const getPrice = async (tempSelectedOptions) => {
-    setLoader(true)
-    let action = constant.ACTION.PRODUCT + productID + '/' + constant.ACTION.PRICE;
-    let param = { "options": tempSelectedOptions }
-    try {
-      let response = await WebService.post(action, param);
-      if (response) {
-        // setProductDetails(response)
-        setDiscountedPrice(response.finalPrice);
-        setProductPrice(response.originalPrice);
-        setIsDiscount(response.discounted);
-        // finalDiscountedPrice = response.originalPrice
-        setLoader(false)
-      }
-    } catch (error) {
-      setLoader(false)
-    }
-  }
+
   const checkedOrNot = (value) => {
     let index = selectedProductColor.findIndex(a => a.id === value.id);
     if (index === -1) {
@@ -129,29 +112,19 @@ const ProductDescriptionInfo = ({
             <span>{productPrice} </span>
           )}
       </div>
-      {/* {product.rating && product.rating > 0 ? ( */}
-      <div className="pro-details-rating-wrap">
-        <div className="pro-details-rating">
-          <StarRatings
-            rating={product.rating}
-            starRatedColor="#ffa900"
-            starDimension="17px"
-            starSpacing="1px"
-            numberOfStars={5}
-            name='view-rating'
-          />
-          {/* <Rating ratingValue={product.rating} /> */}
-        </div>
-      </div>
+      
       {/* ) : (
           ""
         )} */}
       <div className="pro-details-list">
         <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
       </div>
-
+      <div>Available: {product.quantity}m </div>
+      <div>Price: {product.finalPrice}/m</div>
+      <div>Minimum order available: {product.quantityOrderMinimum}m</div>
       {product.options ? (
         <div className="pro-details-size-color">
+          
           {
             product.options.map((option, key) => {
               return (
@@ -258,28 +231,19 @@ const ProductDescriptionInfo = ({
           ""
         )}
       {
-        //   product.affiliateLink ? (
-        //   <div className="pro-details-quality">
-        //     <div className="pro-details-cart btn-hover ml-0">
-        //       <a
-        //         href={product.affiliateLink}
-        //         rel="noopener noreferrer"
-        //         target="_blank"
-        //       >
-        //         Buy Now
-        //       </a>
-        //     </div>
-        //   </div>
-        // ) : (
+   
         <div className="pro-details-quality">
           <div className="cart-plus-minus">
-            <button onClick={() => setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)} className="dec qtybutton">-</button>
+            <button onClick={() => setQuantityCount(quantityCount > (product.quantityOrderMinimum || 10) ? quantityCount - 1 : quantityCount)} className="dec qtybutton">-</button>
             <input
               className="cart-plus-minus-box"
               type="text"
               value={quantityCount}
             />
-            <button onClick={() => setQuantityCount(quantityCount < product.quantity ? quantityCount + 1 : quantityCount)} className="inc qtybutton">+</button>
+            <button onClick={() => {
+              console.log('flflflf', quantityCount);
+              setQuantityCount(quantityCount < product.quantity ? quantityCount + 1 : quantityCount)
+            }} className="inc qtybutton">+</button>
           </div>
           <div className="pro-details-cart btn-hover">
             {product.available && product.canBePurchased && product.visible && product.quantity > 0 ? (

@@ -26,7 +26,7 @@ const Home = ({ merchant, strings }) => {
       >
         {/* hero slider 
         <HeroSlider string={strings} />*/}
-        <div class="container"><h1 style={{padding : "40px 0"}}>the materialist is a marketplace for deadstock fabrics that connects fashion houses, designers and other visionaries with high-end suppliers' excess inventories.
+        <div class="container"><h1 style={{padding : "80px 0"}}>the materialist is a marketplace for deadstock fabrics that connects fashion houses, designers and other visionaries with high-end suppliers' excess inventories.
         the materialist inspires and accelerates a new ecosystem for circular textiles and materials.</h1></div>
         <div className="container">
           <div className="d-flex justify-content-between align-items-center">

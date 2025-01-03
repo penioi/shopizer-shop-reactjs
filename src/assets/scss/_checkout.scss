@@ -20,6 +20,7 @@
         .login-toggle-btn {
           display: flex;
           align-items: center;
+       
 
           label {
             margin-bottom: 0px
@@ -485,4 +486,12 @@ iframe {
   border: none;
   line-height: 0;
   float: left;
+}
+
+
+.login-toggle-btn {
+  input[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+  }
 }

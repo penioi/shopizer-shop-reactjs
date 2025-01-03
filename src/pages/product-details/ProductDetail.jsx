@@ -19,7 +19,6 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
 
   useEffect(() => {
     getProductDetails();
-    getReview();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -37,16 +36,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
       setLoader(false)
     }
   }
-  const getReview = async () => {
-    let action = constant.ACTION.PRODUCTS + productID + '/reviews?store=' + defaultStore;
-    try {
-      let response = await WebService.get(action);
-      if (response) {
-        setProductReview(response)
-      }
-    } catch (error) {
-    }
-  }
+
   return (
     <Fragment>
       <MetaTags>
@@ -66,7 +56,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
         headerPaddingClass="header-padding-2"
         headerTop="visible">
         {/* breadcrumb */}
-        <Breadcrumb />
+        {/* <Breadcrumb /> */}
 
         {/* product description with image */}
         {

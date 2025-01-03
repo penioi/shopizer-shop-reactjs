@@ -1,8 +1,6 @@
 /*------- 6. Product style  --------*/
 
-.product-content h3 {
-  font-weight: 100;
-}
+
 
 .product-price span {
   font-size: 24px;
@@ -295,7 +293,7 @@
     position: relative;
 
     overflow: hidden;
-    height: 280px;
+    height: 330px;
 
     img {
       width: 100%;
@@ -566,7 +564,6 @@
     span {
       font-size: 24px;
 
-      color: #fe5252;
 
       &.old {
         font-size: 18px;
@@ -1618,7 +1615,7 @@
   .product-img {
     position: relative;
 
-    height: 300px;
+    height: 370px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4327,6 +4324,40 @@
       &:hover {
         background-color: #bca487;
       }
+    }
+  }
+}
+
+.product-wrap .product-content h3 {
+  font-weight: 100;
+  text-align: left;
+  line-height: 23px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.description-wrapper {
+  background: #f1f2ef;
+  padding: 50px;
+  margin-bottom: 50px;
+  & > div {
+    margin-bottom: 10px;
+  }
+  span {
+    font-weight: 500;
+    min-width: 140px;
+    display: inline-block;
+  }
+
+  &--cheque {
+    display: flex;
+    flex-wrap: wrap;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      min-width: 25%;
+      
     }
   }
 }

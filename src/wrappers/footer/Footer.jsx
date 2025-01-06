@@ -1,9 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { animateScroll } from "react-scroll";
-import FooterCopyright from "../../components/footer/FooterCopyright";
-import FooterNewsletter from "../../components/footer/FooterNewsletter";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 const Footer = ({
@@ -14,9 +11,6 @@ const Footer = ({
   spaceRightClass,
   containerClass,
   extraFooterClass,
-  sideMenu,
-  merchant,
-  strings
 }) => {
   const [scroll, setScroll] = useState(0);
   const [top, setTop] = useState(0);
@@ -49,143 +43,35 @@ const Footer = ({
     >
       <div className={`${containerClass ? containerClass : "container"}`}>
         <div className="row">
-          <div className={sideMenu ? "col-xl-3 col-sm-3" : "col-lg-2 col-sm-3"}>
-            {/* footer copyright */}
-            <FooterCopyright
-              footerLogo="/assets/img/logo/logo.png"
-              spaceBottomClass="mb-30"
-            />
+          <div className="col-4 footer-list">
+            <ul>
+              <li>catalogue</li>
+              <li>London showroom</li>
+            </ul>
+            <div className="copyright">@2025 the materialist</div>
           </div>
-          <div className={sideMenu ? "col-xl-3 col-sm-3" : "col-lg-3 col-sm-3"}>
+          <div className="col-4">
             <div className="footer-widget mb-30">
-              <div className="footer-title">
-                <h3>{strings["Address"]}</h3>
-              </div>
+            
               <div className="footer-list">
-                {
-
-                  merchant &&
-                  <ul>
-                    <li>
-                      <Link to="">
-                        {merchant.address.address}  {merchant.address.city}, {merchant.address.stateProvince},
-                       {merchant.address.country} <br /> {merchant.address.postalCode}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="">
-                        {strings["Tel"]}: {merchant.phone}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="">
-                        {strings["E-mail"]} : {merchant.email}
-                      </Link>
-                    </li>
-                  </ul>
-                }
+                
+                <ul>
+                  <li>shipping and delivery</li>
+                  <li>terms and conditions</li>
+                  <li>privacy policy</li>
+                  <li>frequently asked questions</li>
+                </ul>
+                
               </div>
             </div>
           </div>
-          <div className={sideMenu ? "col-xl-3 col-sm-3" : "col-lg-3 col-sm-3"}>
-            <div className={sideMenu ? "footer-widget mb-30" : "footer-widget mb-30"} >
-              <div className="footer-title">
-                <h3>{strings["USEFUL LINKS"]}</h3>
-              </div>
-              <div className="footer-list">
-                <ul>
-                  <li>
-                    <Link to={"/contact"}>{strings["Contact"]}</Link>
-                  </li>
-                  <li>
-                    <Link to={"/login"}>{strings["Login"]}</Link>
-                  </li>
-                  <li>
-                    <Link to={"/register"}>{strings["Register"]}</Link>
-                  </li>
-                  {/* <li>
-                    <Link to={import.meta.env.PUBLIC_URL + "#/"}>Returns</Link>
-                  </li>
-                  <li>
-                    <Link to={import.meta.env.PUBLIC_URL + "#/"}>
-                      Support Policy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={import.meta.env.PUBLIC_URL + "#/"}>Size guide</Link>
-                  </li>
-                  <li>
-                    <Link to={import.meta.env.PUBLIC_URL + "#/"}>FAQs</Link>
-                  </li> */}
-                </ul>
-              </div>
-            </div>
-          </div>
-          {/* <div
-            className={`${
-              sideMenu ? "col-xl-3 col-sm-4" : "col-lg-2 col-sm-6"
-              }`}
-          >
-            <div
-              className={`${
-                sideMenu
-                  ? "footer-widget mb-30 ml-145"
-                  : "footer-widget mb-30 ml-75"
-                }`}
-            >
-              <div className="footer-title">
-                <h3>FOLLOW US</h3>
-              </div>
-              <div className="footer-list">
-                <ul>
-                  <li>
-                    <a
-                      href="//www.facebook.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Facebook
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="//www.twitter.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Twitter
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="//www.instagram.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Instagram
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="//www.youtube.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Youtube
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div> */}
-          <div className={sideMenu ? "col-xl-3 col-sm-8" : "col-lg-4 col-sm-3"}>
-            {/* footer newsletter */}
-            <FooterNewsletter
-              strings={strings}
-              spaceBottomClass="mb-30"
-              // spaceLeftClass="ml-70"
-              sideMenu={sideMenu}
-            />
+       
+          
+          <div className="col-4 footer-list">
+            <ul>
+              <li>Need assistance?</li>
+              <li>Contact us <span><svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M345.606 107.5l-21.212 21.213 94.393 94.394H0v30h418.787L324.394 347.5l21.212 21.213 130.607-130.607z"></path></svg></span></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -217,14 +103,8 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
 
-  };
-};
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
 )(multilanguage(Footer));
-// export default FooterOne;

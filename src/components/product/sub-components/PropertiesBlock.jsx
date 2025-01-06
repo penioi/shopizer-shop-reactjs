@@ -1,10 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 const PropertiesBlock = ({ title, show, data }) => {
-
+    if (!data?.length) {
+      return null;
+    }
      return (
-            <div>
-                <div class="prop-block-title">{title}</div>
+            <div className="mr-2">
+                {/* <div class="prop-block-title">{title}</div> */}
                 <ul>
                 {show.map(name => data.map( value => value.property.code === name ?   
                         (<li>

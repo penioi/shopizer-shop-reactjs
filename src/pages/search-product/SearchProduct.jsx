@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import { connect } from 'react-redux';
 import Layout from '../../layouts/Layout';
-import Breadcrumb from '../../wrappers/breadcrumb/Breadcrumb';
 import ShopSidebar from '../../wrappers/product/ShopSidebar';
 import ShopTopbar from '../../wrappers/product/ShopTopbar';
 import ShopProducts from '../../wrappers/product/ShopProducts';
@@ -15,7 +14,7 @@ import { setLoader } from "../../redux/actions/loaderActions";
 import { setCategoryID } from "../../redux/actions/productActions";
 import { multilanguage } from "redux-multilanguage";
 
-const SearchProduct = ({ strings, location, defaultStore, currentLanguageCode, setLoader, searchID, setCategoryID, merchant }) => {
+const SearchProduct = ({ strings, location, setLoader, searchID, setCategoryID, merchant }) => {
     const [layout, setLayout] = useState('grid three-column');
 
     const [productData, setProductData] = useState([]);
@@ -46,8 +45,6 @@ const SearchProduct = ({ strings, location, defaultStore, currentLanguageCode, s
         try {
             let response = await WebService.post(action, param);
             if (response) {
-                // console.log(response)
-                // console.log(response.categoryFacets)
                 setProductData(response.products);
                 setTotalProduct(response.productCount);
                 setSubCategory(response.categoryFacets)
@@ -73,8 +70,6 @@ const SearchProduct = ({ strings, location, defaultStore, currentLanguageCode, s
             <Layout headerContainerClass="container-fluid"
                 headerPaddingClass="header-padding-2"
                 headerTop="visible">
-                {/* breadcrumb */}
-                <Breadcrumb />
 
                 <div className="shop-area pt-95 pb-100">
                     <div className="container">

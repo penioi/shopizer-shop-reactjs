@@ -4,44 +4,25 @@ import React, { Fragment, useState, useEffect } from "react";
 import Swiper from "react-id-swiper";
 import 'swiper/swiper.scss'
 
-//import { Swiper } from 'swiper/react';
-//import 'swiper/swiper.scss';
-
-// import { getProductCartQuantity } from "../../helpers/product";
 import { Modal } from "react-bootstrap";
-// import Rating from "./sub-components/ProductRating";
 import { connect } from "react-redux";
-import WebService from '../../util/webService';
-import constant from '../../util/constant';
 import { setLoader } from "../../redux/actions/loaderActions";
-import StarRatings from 'react-star-ratings';
 import PropertiesBlock from "./sub-components/PropertiesBlock";
+import QuantityBox from "./QuantityBox";
+import AvailabilityInfo from "./AvailabilityInfo";
 function ProductModal(props, strings) {
   const { product, cartData, defaultStore, userData, finalproductprice, finaldiscountedprice, setLoader } = props;
 
 
 
-  const [discountedPrice, setDiscountedPrice] = useState(finaldiscountedprice)
-  const [productPrice, setProductPrice] = useState(finalproductprice)
-  const [isDiscount, setIsDiscount] = useState(product.discounted)
-
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
   const [selectedProductColor, setSelectedProductColor] = useState([]);
-  // const [productStock, setProductStock] = useState();
-  const [quantityCount, setQuantityCount] = useState(1);
+  const [quantityCount, setQuantityCount] = useState(product.quantityOrderMinimum || 10);
   const [currentImage, setCurrentImage] = useState(defaultImage(product));
-  // const wishlistItem = props.wishlistitem;
-  // const compareItem = props.compareitem;
 
   const addToCart = props.addtocart;
-  // const addToWishlist = props.addtowishlist;
-  // const addToCompare = props.addtocompare;
-
   const addToast = props.addtoast;
-  // const cartItems = props.cartitems;
-
-  // const productCartQty = 0
 
   useEffect(() => {
     getDefualtsOption()
@@ -98,46 +79,9 @@ function ProductModal(props, strings) {
           }
         })
       })
-      setSelectedProductColor(temp)
-      getPrice(temp)
-    }
-  }
-  const onChangeOptions = async (value, option) => {
-
-    let tempSelectedOptions = [];
-    let index;
-    if (option.type === 'radio' || option.type === 'select') {
-      index = selectedProductColor.findIndex(a => a.name === option.name);
-    } else {
-      index = selectedProductColor.findIndex(a => a.id === value.id);
-    }
-
-    if (index === -1) {
-      let temp = [...selectedProductColor, { 'name': option.name, 'id': value.id }]
-      tempSelectedOptions = temp;
-      setSelectedProductColor(temp)
-      // setSelectedProductColor([...selectedProductColor, { 'name': option.name, 'id': value.id }])
-    } else {
-      let temp = [...selectedProductColor]
-      if (option.type === 'radio' || option.type === 'select') {
-        temp[index] = { 'name': option.name, 'id': value.id };
-
-      } else {
-        temp.splice(index, 1);
-      }
-      tempSelectedOptions = temp;
-      setSelectedProductColor(temp)
     }
   }
 
-  const checkedOrNot = (value) => {
-    let index = selectedProductColor.findIndex(a => a.id === value.id);
-    if (index === -1) {
-      return false
-    } else {
-      return true
-    }
-  }
 
   return (
     <Fragment>
@@ -194,34 +138,11 @@ function ProductModal(props, strings) {
             <div className="col-md-7 col-sm-12 col-xs-12">
               <div className="product-details-content quickview-content">
                 <h2>{product.description.name}</h2>
-                <div className="product-details-price">
-                  {isDiscount ? (
-                    <Fragment>
-                      <span>
-                        {discountedPrice}
-                      </span>{" "}
-                      <span className="old">
-                        {productPrice}
-                      </span>
-                    </Fragment>
-                  ) : (<span>{productPrice} </span>)}
-                </div>
-
-                <div className="pro-details-rating-wrap">
-                  <div className="pro-details-rating">
-                    <StarRatings
-                      rating={product.rating}
-                      starRatedColor="#ffa900"
-                      starDimension="17px"
-                      starSpacing="1px"
-                      numberOfStars={5}
-                      name='view-rating'
-                    />
-                    {/* <Rating ratingValue={product.rating} /> */}
-                  </div>
-                </div>
+        
+                <br />
                 <div className="pro-details-list">
                   <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
+                  <br />
                   <ul>
                      
                     {product.productSpecifications.length && 
@@ -230,155 +151,36 @@ function ProductModal(props, strings) {
                         x {product.productSpecifications.height} Inches{" "}
                       </li>
                     }
-                    {
-                      <Fragment>
-                        <PropertiesBlock title="Technical Information"
-                          show={["construction", "main_material", "compostion"]} data={product.properties}
-                        ></PropertiesBlock>
-                        <PropertiesBlock title="Classifications"
-                          show={["drape"]} data={product.properties}
-                        ></PropertiesBlock>
-                        <PropertiesBlock title="Sustainability Credentials"
-                        show={["sustainability_credentials"]} data={product.properties}
-                      ></PropertiesBlock>
-                      </Fragment>
-
-                    }
+                    <div className="d-flex">
+                      <PropertiesBlock
+                        title="Technical Information"
+                        show={["construction", "main_material", "compostion"]}
+                        data={product.properties}>
+                      </PropertiesBlock>
+                      <PropertiesBlock
+                        title="Classifications"
+                        show={["drape"]}
+                        data={product.properties}>
+                      </PropertiesBlock>
+                      <PropertiesBlock
+                        title="Sustainability Credentials"
+                        show={["sustainability_credentials"]}
+                        data={product.properties}>
+                      </PropertiesBlock>
+                      <div className="mr-2"><ul><li><span><b>SKU</b></span> {product.sku}</li></ul></div>
+                    </div>
+                    <hr />
+                    <AvailabilityInfo price={product.finalPrice} minQuantity={product.quantityOrderMinimum} availableQuantity={product.quantity} />
                   </ul>
                 </div>
 
-                {product.options ? (
-                  <div className="pro-details-size-color">
-                    {
-                      product.options.map((option, key) => {
-                        return (
-                          option.type === 'radio' &&
-                          <div className="pro-details-color-wrap" key={key}>
-                            <span>{option.name}</span>
-                            <div className="pro-details-color-content" style={{ display: 'flex', flexDirection: 'column' }}>
-                              {
-
-                                option.optionValues.map((value, index) => {
-                                  return (
-                                    <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', margin: 15 }} key={index}>
-                                      {value.image && <img src={value.image} alt="product-option" />}
-
-                                      <label className={`pro-details-color-content--single`} style={{ backgroundColor: value.code }} key={index} >
-
-                                        <input
-                                          type={option.type}
-                                          value={value.id}
-                                          name={option.name}
-                                          checked={checkedOrNot(value)}
-                                          onChange={() => onChangeOptions(value, option)}
-                                        />
-                                        <span className="checkmark"></span>
-                                      </label>
-                                      <label>{value.description.name} {value.price && '(' + value.price + ')'}</label>
-                                    </div>
-                                  );
-                                })
-                                // )
-                              }
-
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                    {
-
-                      product.options.map((option, index) => {
-                        return (
-                          option.type === 'select' &&
-                          <div className="pro-details-size" key={index}>
-                            <span>{option.name}</span>
-                            <div className="pro-details-size-content">
-                              {
-                                <select onChange={(e) => { onChangeOptions(JSON.parse(e.target.value), option) }}>
-                                  {/* <option>Select a country</option> */}
-                                  {
-
-                                    option.optionValues.map((singleSize, i) => {
-                                      return <option key={i} value={JSON.stringify(singleSize)} selected={checkedOrNot(singleSize)}>{singleSize.description.name} {singleSize.price && '(' + singleSize.price + ')'}</option>
-                                    })
-                                  }
-                                </select>
-
-                              }
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                    {
-
-                      product.options.map((option, index) => {
-                        return (
-                          option.type === 'checkbox' &&
-                          <div className="pro-details-size" key={index}>
-                            <span>{option.name}</span>
-                            <div className="pro-details-size-content" style={{ display: 'flex' }}>
-                              {
-                                option.optionValues.map((singleSize, key) => {
-                                  return (
-                                    <div style={{ flexDirection: 'column ', display: 'flex', alignItems: 'center', marginRight: 15 }} key={key}>
-                                      {singleSize.image && <img src={singleSize.image} alt="product-option" />}
-
-                                      <label className={`pro-details-size-content--single`} key={key}  >
-                                        <input
-                                          type="checkbox"
-                                          value={singleSize.description.name}
-                                          name={option.name}
-                                          checked={checkedOrNot(singleSize)}
-                                          onChange={() => {
-                                            onChangeOptions(singleSize, option)
-                                            // setSelectedProductSize(singleSize.name);
-                                            //   setProductStock(singleSize.stock);
-                                            //   setQuantityCount(1);
-                                          }}
-                                        />
-                                        <span className="size-name">{singleSize.description.name} {singleSize.price && '(' + singleSize.price + ')'}</span>
-                                      </label>
-                                    </div>
-                                  );
-
-                                })}
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                ) : (
-                  ""
-                )}
+                  
                 {
-                  //   product.affiliateLink ? (
-                  //   <div className="pro-details-quality">
-                  //     <div className="pro-details-cart btn-hover">
-                  //       <a
-                  //         href={product.affiliateLink}
-                  //         rel="noopener noreferrer"
-                  //         target="_blank"
-                  //       >
-                  //         Buy Now
-                  //       </a>
-                  //     </div>
-                  //   </div>
-                  // ) : (
+        
                   <div className="pro-details-quality">
-                    <div className="cart-plus-minus">
-                      <button onClick={() => setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)} className="dec qtybutton">
-                        -
-                      </button>
-                      <input className="cart-plus-minus-box" type="text" value={quantityCount}   />
-                      <button onClick={() => setQuantityCount(quantityCount < product.quantity ? quantityCount + 1 : quantityCount)} className="inc qtybutton" >
-                        +
-                      </button>
-                    </div>
+                    <QuantityBox quantity={quantityCount} maxQuantity={product.quantity} minQuantity={product.quantityOrderMinimum} setQuantityCb={setQuantityCount} />
                     <div className="pro-details-cart btn-hover">
-                      {product.available && product.canBePurchased && product.visible && product.quantity > 0 ? (
+                      {product.quantity > 0 ? (
                         <button
                           onClick={() => {
                             let options = [];
@@ -393,45 +195,15 @@ function ProductModal(props, strings) {
                               defaultStore,
                               userData,
                               options, strings
-                              // selectedProductColor,
-                              // selectedProductSize
                             )
                           }
-                          }>{/* {strings["Add to cart"]} */} Add to cart</button>
+                          }> Add to cart</button>
                       ) : (
                         <button disabled>Out of Stock</button>
                       )}
                     </div>
-                    {/* <div className="pro-details-wishlist">
-                        <button
-                          className={wishlistItem !== undefined ? "active" : ""}
-                          disabled={wishlistItem !== undefined}
-                          title={
-                            wishlistItem !== undefined
-                              ? "Added to wishlist"
-                              : "Add to wishlist"
-                          }
-                          onClick={() => addToWishlist(product, addToast)}
-                        >
-                          <i className="pe-7s-like" />
-                        </button>
-                      </div> */}
-                    {/* <div className="pro-details-compare">
-                        <button
-                          className={compareItem !== undefined ? "active" : ""}
-                          disabled={compareItem !== undefined}
-                          title={
-                            compareItem !== undefined
-                              ? "Added to compare"
-                              : "Add to compare"
-                          }
-                          onClick={() => addToCompare(product, addToast)}
-                        >
-                          <i className="pe-7s-shuffle" />
-                        </button>
-                      </div> */}
+               
                   </div>
-                  // )
                 }
               </div>
             </div>

@@ -7,21 +7,12 @@ import Logo from "../../components/header/Logo";
 import NavMenu from "../../components/header/NavMenu";
 import IconGroup from "../../components/header/IconGroup";
 import MobileMenu from "../../components/header/MobileMenu";
-import HeaderTop from "../../components/header/HeaderTop";
 import WebService from '../../util/webService';
 import constant from '../../util/constant';
-// import { setLocalData } from '../../util/helper';
 import { setMerchant } from "../../redux/actions/storeAction";
 import { getCurrentLocation } from "../../redux/actions/userAction";
 const Header = ({
   setMerchant,
-  merchant,
-  layout,
-  top,
-  borderStyle,
-  headerPaddingClass,
-  headerPositionClass,
-  headerBgClass,
   defaultStore,
   getCurrentLocation,
   currentLanguageCode
@@ -30,25 +21,25 @@ const Header = ({
 
   const [categoryData, setCategoryData] = useState([]);
   const [contentData, setContentData] = useState([]);
-
+  let isMounted = true; 
   useEffect(() => {
+
+    // Flag to track if component is mounted
     checkServerHealth();
+
+    return () => {
+      isMounted = false; // Set flag to false on unmount
+    };
 
   }, []);
   const checkServerHealth = async () => {
 
     // let action = 'actuator/health/ping';
     try {
-      // console.log("*********************************");
-      // console.log("BASE URL " + window._env_.APP_BASE_URL);
-      // console.log("APP_API_VERSION " + window._env_.APP_API_VERSION);
-      // console.log("APP_MERCHANT " + window._env_.APP_MERCHANT);
-      // console.log("*********************************");
       let response = await WebService.get(window._env_.APP_BASE_URL + '/actuator/health/ping');
 
-      if (response) {
-        // console.log(response)
-        if (response.status === 'UP') {
+      if (isMounted && response) {
+        if (isMounted && response.status === 'UP') {
           setMerchant()
           getCurrentLocation();
           getCategoryHierarchy();
@@ -67,13 +58,11 @@ const Header = ({
     let action = constant.ACTION.CATEGORY + '?count=20&page=0&store=' + defaultStore + '&lang=' + currentLanguageCode;
     try {
       let response = await WebService.get(action);
-      if (response) {
+      if (isMounted && response) {
         setCategoryData(response.categories);
       }
     } catch (error) {
-      // console.log(error.messages)
-      // console.log(error)
-      // history.push('/not-found')
+      console.log(error.messages)
     }
 
 
@@ -83,15 +72,12 @@ const Header = ({
     let action = constant.ACTION.CONTENT + constant.ACTION.PAGES + '?page=0&count=20&store=' + defaultStore + '&lang=' + currentLanguageCode;
     try {
       let response = await WebService.get(action);
-      if (response) {
+      if (isMounted && response) {
         setContentData(response.items)
       }
     } catch (error) {
     }
   }
-  const handleScroll = () => {
-    setScroll(window.scrollY);
-  };
 
   return (
     <header
@@ -101,23 +87,19 @@ const Header = ({
         <div className= "container">
           <div className="row">
             <div className="col-xl-2 col-lg-2 col-md-6 col-8 d-flex align-items-center">
-              {/* header logo */}
               {
                 <Logo imageUrl="https://www.thematerialist.co/sp/decorations/layout/fabricsociety/images/logo.png" logoClass="logo" />
               }
 
             </div>
             <div className="nav-menu d-none d-lg-block col-xl-8 col-lg-8 align-items-center">
-              {/* Nav menu */}
               <NavMenu categories={categoryData} contents={contentData} />
             </div>
             <div className="col-xl-2 col-lg-2 col-md-6 col-4 d-flex align-items-center justify-content-end">
-              {/* Icon group */}
               <IconGroup />
             </div>
           </div>
         </div>
-        {/* mobile menu */}
         <MobileMenu categories={categoryData} contents={contentData} />
       
     </header>
@@ -125,7 +107,6 @@ const Header = ({
 };
 
 Header.propTypes = {
-  // merchant: PropTypes.string,
   borderStyle: PropTypes.string,
   headerPaddingClass: PropTypes.string,
   headerPositionClass: PropTypes.string,
@@ -158,4 +139,3 @@ export default connect(
   mapDispatchToProps
 )(multilanguage(Header));
 
-// export default HeaderOne;

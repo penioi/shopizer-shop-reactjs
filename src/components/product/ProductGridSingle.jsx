@@ -3,18 +3,12 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
-// import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import { setProductID } from "../../redux/actions/productActions";
 const ProductGridSingleTwo = ({
   product,
-  // currency,
   addToCart,
-  // addToWishlist,
-  // addToCompare,
   cartData,
-  // wishlistItem,
-  // compareItem,
   sliderClassName,
   spaceBottomClass,
   colorClass,
@@ -39,42 +33,15 @@ const ProductGridSingleTwo = ({
         <div
           className={`product-wrap-2 ${spaceBottomClass ? spaceBottomClass : ""} ${colorClass ? colorClass : ""} `}>
           <div className="product-img">
-            <Link to={import.meta.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+            <Link to={`${product.description.friendlyUrl}`} onClick={() => onClickProductDetails(product.id)}>
               {product.images && product.images.length > 0}
                 <img src={product.images[0].imageUrl} alt="" />
               
 
             </Link>
-            {/* {
-              product.discount || product.new ? (
-                <div className="product-img-badges">
-                  {product.discount ? (
-                    <span className="pink">-{product.discount}%</span>
-                  ) : ("")}
-                  {product.new ? <span className="purple">New</span> : ""}
-                </div>
-              ) : ("")
-            } */}
 
             <div className="product-action-2">
-              {/* {product.affiliateLink ? (
-                <a
-                  href={product.affiliateLink}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  title="Buy now"
-                >
-                  {" "}
-                  <i className="fa fa-shopping-cart"></i>{" "}
-                </a>
-              ) : product.variation && product.variation.length >= 1 ? (
-                <Link
-                  to={`${import.meta.env.PUBLIC_URL}/product/${product.id}`}
-                  title="Select options"
-                >
-                  <i className="fa fa-cog"></i>
-                </Link>
-              ) : product.stock && product.stock > 0 ? ( */}
+             
               <Link
                 to={`product/${product.description.friendlyUrl}`} onClick={() => onClickProductDetails(product.id)} title="Select options">
                 <i className="fa fa-cog"></i>
@@ -90,34 +57,17 @@ const ProductGridSingleTwo = ({
                 </button>
               }
 
-              {/* ) : (
-                      <button disabled className="active" title="Out of stock">
-                        <i className="fa fa-shopping-cart"></i>
-                      </button>
-                    )} */}
+
 
               <button onClick={() => setModalShow(true)} title="Quick View">
                 <i className="fa fa-eye"></i>
               </button>
-
-              {/* <button
-                className={compareItem !== undefined ? "active" : ""}
-                disabled={compareItem !== undefined}
-                title={
-                  compareItem !== undefined
-                    ? "Added to compare"
-                    : "Add to compare"
-                }
-                onClick={() => addToCompare(product, addToast)}
-              >
-                <i className="fa fa-retweet"></i>
-              </button> */}
             </div>
           </div>
           <div className="product-content-2">
             <div className={`title-price-wrap-2 ${titlePriceClass ? titlePriceClass : ""}`}>
               <h3>
-                <Link to={import.meta.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                <Link to={`${product.description.friendlyUrl}`} onClick={() => onClickProductDetails(product.id)}>
                   {product.description.name}
                 </Link>
               </h3>
@@ -136,41 +86,21 @@ const ProductGridSingleTwo = ({
                   )}
               </div>
             </div>
-            {/* <div className="pro-wishlist-2">
-              <button
-                className={wishlistItem !== undefined ? "active" : ""}
-                disabled={wishlistItem !== undefined}
-                title={
-                  wishlistItem !== undefined
-                    ? "Added to wishlist"
-                    : "Add to wishlist"
-                }
-                onClick={() => addToWishlist(product, addToast)}
-              >
-                <i className="fa fa-heart-o" />
-              </button>
-            </div> */}
+           
           </div>
         </div>
       </div>
-      {/* product modal */}
       <ProductModal
         show={modalShow}
         onHide={() => setModalShow(false)}
         product={product}
         defaultStore={defaultStore}
-        // currency={currency}
-        // discountedprice={discountedPrice}
         finalproductprice={finalProductPrice}
         finaldiscountedprice={finalDiscountedPrice}
-        // cartitem={cartItem}
-        // wishlistitem={wishlistItem}
-        // compareitem={compareItem}
         addtocart={addToCart}
 
         cartData={cartData}
         userData={userData}
-        // addtocompare={addToCompare}
         addtoast={addToast}
       />
     </Fragment >
@@ -179,16 +109,11 @@ const ProductGridSingleTwo = ({
 
 ProductGridSingleTwo.propTypes = {
   addToCart: PropTypes.func,
-  // addToCompare: PropTypes.func,
-  // addToWishlist: PropTypes.func,
-  // compareItem: PropTypes.object,
-  // currency: PropTypes.object,
   product: PropTypes.object,
   sliderClassName: PropTypes.string,
   spaceBottomClass: PropTypes.string,
   colorClass: PropTypes.string,
   titlePriceClass: PropTypes.string,
-  // wishlistItem: PropTypes.object
 };
 
 const mapStateToProps = state => {

@@ -1,32 +1,22 @@
 import React, { Fragment } from "react";
 import MetaTags from "react-meta-tags";
 import Layout from "../../layouts/Layout";
-import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
-import TabProduct from "../../wrappers/product/TabProduct";
-// import FeatureIcon from "../../wrappers/feature-icon/FeatureIcon";
-import Promo from "../../wrappers/promos/Promos";
-import Newsletter from "../../wrappers/newsletter/Newsletter";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-const Home = ({ merchant, strings }) => {
+const Home = ({ merchant }) => {
   return (
     <Fragment>
       <MetaTags>
         <title>{merchant.name}</title>
-        {/* <meta
-          name="description"
-          content="Fashion home of flone react minimalist eCommerce template."
-        /> */}
+  
       </MetaTags>
       <Layout
         headerContainerClass="container-fluid"
         headerPaddingClass="header-padding-2"
         headerTop="visible"
       >
-        {/* hero slider 
-        <HeroSlider string={strings} />*/}
-        <div class="container"><h1 style={{padding : "80px 0"}}>the materialist is a marketplace for deadstock fabrics that connects fashion houses, designers and other visionaries with high-end suppliers' excess inventories.
+        <div className="container"><h1 style={{padding : "80px 0"}}>the materialist is a marketplace for deadstock fabrics that connects fashion houses, designers and other visionaries with high-end suppliers' excess inventories.
         the materialist inspires and accelerates a new ecosystem for circular textiles and materials.</h1></div>
         <div className="container">
           <div className="d-flex justify-content-between align-items-center">
@@ -92,4 +82,3 @@ const mapStateToProps = state => {
 
 
 export default connect(mapStateToProps, null)(multilanguage(Home));
-// export default HomeFashionSeven;

@@ -1,7 +1,6 @@
 import WebService from '../../util/webService';
 import constant from '../../util/constant';
 import Geocode from "react-geocode";
-// import { changeLanguage } from 'redux-multilanguage';
 export const SET_USER = "SET_USER";
 export const SET_COUNTRY = "SET_COUNTRY";
 export const SET_SHIPPING_COUNTRY = "SET_SHIPPING_COUNTRY";
@@ -77,10 +76,8 @@ export const getShippingState = (code) => {
 export const getCurrentLocation = () => {
     return async dispatch => {
         const location = window.navigator && window.navigator.geolocation
-        // console.log(location, 'getCurrentLocation')
         if (location) {
             location.getCurrentPosition((position) => {
-                // console.log(position)
                 dispatch(getCurrentAddress(position.coords.latitude, position.coords.longitude))
             }, (error) => {
                 console.log(error)

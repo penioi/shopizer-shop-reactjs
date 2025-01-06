@@ -2,13 +2,9 @@ import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from 'react';
 import MetaTags from 'react-meta-tags';
 import { useHistory } from "react-router-dom";
-// import Paginator from 'react-hooks-paginator';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import { connect } from 'react-redux';
-// import { getSortedProducts } from '../../helpers/product';
 import Layout from '../../layouts/Layout';
-import Breadcrumb from '../../wrappers/breadcrumb/Breadcrumb';
-import ShopSidebar from '../../wrappers/product/ShopSidebar';
 import ShopTopbar from '../../wrappers/product/ShopTopbar';
 import ShopProducts from '../../wrappers/product/ShopProducts';
 import WebService from '../../util/webService';
@@ -18,28 +14,25 @@ import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
 import { setCategoryID } from "../../redux/actions/productActions";
 import ReactPaginate from 'react-paginate';
+import ShopTopFilter from "../../components/product/ShopTopFilter";
 
 const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, }) => {
     const [layout, setLayout] = useState('grid three-column');
     const history = useHistory();
-    // const [sortType, setSortType] = useState('');
     const [categoryValue, setCategoryValue] = useState('');
-    // const [filterSortType, setFilterSortType] = useState('');
-    // const [filterSortValue, setFilterSortValue] = useState('');
     const [offset, setOffset] = useState(0);
-    // const [skip, setSkip] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const pageLimit = parseInt(window._env_.APP_PRODUCT_GRID_LIMIT) || 12;
     const [productData, setProductData] = useState([]);
     const [totalProduct, setTotalProduct] = useState(0);
     const [productDetails, setProductDetails] = useState('');
-    const [subCategory, setSubCategory] = useState([]);
-    const [manufacture, setManufacture] = useState([]);
-    const [color, setColor] = useState([]);
     const [size, setSize] = useState([]);
-    const [selectedOption, setSelectedOption] = useState([]);
-    const [selectedManufature, setSelectedManufature] = useState([]);
-    // const [sortedProducts, setSortedProducts] = useState([]);
+    const [availabilityFilters, setAvailabilityFilters] = useState([]);
+    const [colorFilters, setColorFilters] = useState([]);
+    const [priceFilters, setPriceFilters] = useState([]);
+    const [originFilters, setOriginFilters] = useState([]);
+    const [sku, setSku] = useState("");
+    let isMounted = true;
 
     const { pathname } = location;
 
@@ -47,65 +40,46 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         setLayout(layout)
     }
 
-    const getSortParams = (sortType, sortValue) => {
-        // console.log(sortType)
-        let tempSelectedOption = selectedOption;
-        let tempSelectedManufature = selectedManufature;
-        if (sortType === 'size' || sortType === 'color') {
-            let index = selectedOption.findIndex(a => a === sortValue);
-            // console.log(index)
-            if (index === -1) {
-                tempSelectedOption = [...selectedOption, sortValue]
-            } else {
-                tempSelectedOption.splice(index, 1);
-            }
-            // console.log(tempSelectedSize)
-            setSelectedOption(tempSelectedOption)
-        }
-        else if (sortType === 'manufacturer') {
-            let index = selectedManufature.findIndex(a => a === sortValue);
-            // console.log(index)
-            if (index === -1) {
-                tempSelectedManufature = [...selectedManufature, sortValue]
-            } else {
-                tempSelectedManufature.splice(index, 1);
-            }
-            // console.log(tempSelectedSize)
-            setSelectedManufature(tempSelectedManufature)
-        }
-        // console.log(categoryValue, tempSelectedOption, selectedManufature)
-        getProductList(categoryValue, tempSelectedOption, tempSelectedManufature)
-    }
+    const createUrlWithParams = () => (`?${isCheckValueAndSetParams('&store=', defaultStore)}
+        ${isCheckValueAndSetParams('&lang=', currentLanguageCode)}
+        ${isCheckValueAndSetParams('&page=', offset)}
+        ${isCheckValueAndSetParams('&count=', pageLimit)}
+        ${isCheckValueAndSetParams('&category=', categoryID)}
+        ${isCheckValueAndSetParams('&sku=', sku)}
+        ${isCheckValueAndSetParams('&optionValues=', [].join())}
+        ${isCheckValueAndSetParams('&manufacturer=', [].join())}`).split(/\n/).map(str => str.trim()).join("");
 
-    const getCategoryParams = (sortType, sortValue) => {
-        // console.log(sortType)
-        // console.log(sortValue)
-        // setCategoryValue(sortValue)
-        setCategoryID(sortValue.id)
-        history.push("/category/" + sortValue.description.friendlyUrl)
-        // getProductList(categoryValue, selectedOption, selectedManufature)
-    }
+    const createFiltersUri = (arr) => (arr.map(filter => `&optionValues=${filter.value}`)).join("");
 
+
+
+    useEffect(() => {
+        getProductList();
+        return () => {
+            isMounted = false;
+        };
+    }, [availabilityFilters, originFilters, priceFilters, colorFilters, sku])
     useEffect(() => {
 
         setCategoryValue(categoryID)
-        setSubCategory([])
-        setColor([])
-        setManufacture([])
         setSize([])
-        setSelectedManufature([])
-        setSelectedOption([])
-        getProductList(categoryID, [], [])
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        getProductList(categoryID, []);
     }, [categoryID, offset]);
-    const getProductList = async (categoryid, size, manufacture) => {
+
+    const getProductList = async () => {
         setLoader(true)
-        // setProductData([]);
-        // let action = `${constant.ACTION.PRODUCTS} + '?store=' + defaultStore + '&lang=' + currentLanguageCode + '&start=' + offset + '&count=' + pageLimit + '&category=' + categoryID`;
-        let action = `${constant.ACTION.PRODUCTS}?${isCheckValueAndSetParams('&store=', defaultStore)}${isCheckValueAndSetParams('&lang=', currentLanguageCode)}${isCheckValueAndSetParams('&page=', offset)}${isCheckValueAndSetParams('&count=', pageLimit)}${isCheckValueAndSetParams('&category=', categoryid)}${isCheckValueAndSetParams('&optionValues=', size.join())}${isCheckValueAndSetParams('&manufacturer=', manufacture.join())}`;
+        const optionValueUri = `${createFiltersUri([
+            ...availabilityFilters,
+            ...colorFilters,
+            ...priceFilters,
+            ...originFilters
+        ])}`
+        let action = `${constant.ACTION.PRODUCTS}${createUrlWithParams()}${optionValueUri}`;
+        // history.push(optionValueUri);
+
         try {
             let response = await WebService.get(action);
-            if (response) {
+            if (isMounted && response) {
                 setCurrentPage(response.totalPages)
                 setProductData(response.products);
                 setTotalProduct(response.recordsTotal)
@@ -114,56 +88,8 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         } catch (error) {
             setLoader(false)
         }
+    }
 
-        getCategoryDetails(categoryid)
-    }
-    const getCategoryDetails = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            // console.log(response.children);
-            if (response) {
-                //console.log(response);
-                history.push(response.description.friendlyUrl)
-                setProductDetails(response);
-                // let temp = response.children;
-                // console.log(temp)
-                setSubCategory(response.children);
-            }
-        } catch (error) {
-        }
-        getManufacturers(categoryid)
-    }
-    const getManufacturers = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.MANUFACTURERS + '?store=' + defaultStore + '&lang=' + currentLanguageCode
-        try {
-            let response = await WebService.get(action);
-            //console.log(JSON.stringify(response));
-            if (response) {
-                setManufacture(response.sort())
-            }
-        } catch (error) {
-        }
-        getVariants(categoryid)
-    }
-    const getVariants = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.VARIANTS + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            // console.log(response);
-            if (response) {
-                response.forEach(variant => {
-                    if (variant.code === 'color') {
-                        setColor(variant.options);
-                    } else if (variant.code === "size") {
-                        setSize(variant.options.reverse());
-                    }
-                });
-
-            }
-        } catch (error) {
-        }
-    }
     return (
         <Fragment>
             <MetaTags>
@@ -178,8 +104,6 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             <Layout headerContainerClass="container-fluid"
                 headerPaddingClass="header-padding-2"
                 headerTop="visible">
-                {/* breadcrumb */}
-                {/* <Breadcrumb /> */}
 
                 <div className="shop-area pt-95 pb-100">
                     <div className="container">
@@ -191,7 +115,19 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                         {/* <ShopSidebar string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" /> */}
                                     
                                     <div className="col-12">
-                                        {/* shop topbar default */}
+                                        <ShopTopFilter
+                                            avalabilityFilters={availabilityFilters}
+                                            priceFilters={priceFilters}
+                                            originFilters={originFilters}
+                                            colorFilters={colorFilters}
+                                            sku={sku}
+                                            setSku={setSku}
+                                            setAvailabilityFilters={setAvailabilityFilters}
+                                            setPriceFilters={setPriceFilters}
+                                            setOriginFilters={setOriginFilters}
+                                            setColorFilters={setColorFilters}/>
+
+                                           {/* shop topbar default */}
                                         {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
                                         <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} />
 

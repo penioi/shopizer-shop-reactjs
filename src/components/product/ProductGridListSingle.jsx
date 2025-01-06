@@ -2,21 +2,13 @@ import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
-// import { getDiscountPrice } from "../../helpers/product";
-// import Rating from "./sub-components/ProductRating";
 import ProductModal from "./ProductModal";
 import { setProductID } from "../../redux/actions/productActions";
 import { connect } from "react-redux";
-import StarRatings from 'react-star-ratings';
 const ProductGridListSingle = ({
   product,
-  // currency,
   addToCart,
-  // addToWishlist,
-  // addToCompare,
   cartItem,
-  // wishlistItem,
-  // compareItem,
   sliderClassName,
   spaceBottomClass,
   setProductID,
@@ -27,7 +19,6 @@ const ProductGridListSingle = ({
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
 
-  // const discountedPrice = getDiscountPrice(product.price, product.discount);
   const finalProductPrice = product.originalPrice;
   const finalDiscountedPrice = product.finalPrice;
   const onClickProductDetails = (id) => {
@@ -45,7 +36,7 @@ const ProductGridListSingle = ({
           className={`product-wrap ${spaceBottomClass ? spaceBottomClass : ""}`}
         >
           <div className="product-img">
-            <Link to={import.meta.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+            <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
               {
                 product.image && <img className="default-img" src={defaultImage(product)} alt="" />
               }
@@ -68,8 +59,6 @@ const ProductGridListSingle = ({
                     (
                       <button
                         onClick={() => addToCart(product, addToast, cartItem, 1, defaultStore, userData)}
-                        // className="active"
-                        // disabled={cartItem !== undefined && cartItem.quantity > 0}
                         title={strings["Add to cart"]}
                       > {" "}  <i className="pe-7s-cart"></i>{" "}{strings["Add to cart"]}</button>
                     )
@@ -94,7 +83,7 @@ const ProductGridListSingle = ({
             <div className="d-flex  justify-content-between">
                
                   <h3>
-                    <Link to={"/product/" + product.id} onClick={() => onClickProductDetails(product.id)}>
+                    <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
                       {product.description.name}
                     </Link>
                   </h3>
@@ -130,21 +119,7 @@ const ProductGridListSingle = ({
                     {
                       product.image && <img className="default-img img-fluid" src={product.image.imageUrl} alt="" />
                     }
-                    
-                    {/*product.images.length > 1 ?
-                      <img
-                        className="hover-img img-fluid"
-                        src={product.images[1]}
-                        alt=""
-                      />
-                      :
-                      <img
-                        className="hover-img img-fluid"
-                        src={defaultImage(product)}
-                        alt=""
-                      />
-                    */}
-                    
+              
 
                   </Link>
                 </div>
@@ -155,7 +130,7 @@ const ProductGridListSingle = ({
               <div className="shop-list-content">
                 <div className="d-flex  justify-content-between">
                   <h3>
-                    <Link to={"/product/" + product.id} onClick={() => onClickProductDetails(product.id)}>
+                    <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
                       {product.description.name}
                     </Link>
                   </h3>
@@ -185,7 +160,6 @@ const ProductGridListSingle = ({
                       product.available && product.canBePurchased && product.visible && product.quantity > 0 ?
 
                         (
-                          // product, addToast, cartItem, 1, defaultStore
                           <button
                             onClick={() => addToCart(product, addToast, cartItem, 1, defaultStore, userData)}
                             title={strings["Add to cart"]}> {" "} <i className="pe-7s-cart"></i>{" "} {strings["Add to cart"]}
@@ -199,7 +173,6 @@ const ProductGridListSingle = ({
                         )
                     }
 
-                    {/* )} */}
                   </div>
 
 
@@ -209,7 +182,6 @@ const ProductGridListSingle = ({
           </div>
         </div>
       </div>
-      {/* product modal */}
       <ProductModal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -229,15 +201,9 @@ const ProductGridListSingle = ({
 
 ProductGridListSingle.propTypes = {
   addToCart: PropTypes.func,
-  // addToCompare: PropTypes.func,
-  // addToWishlist: PropTypes.func,
-  // cartItem: PropTypes.object,
-  // compareItem: PropTypes.object,
-  // currency: PropTypes.object,
   product: PropTypes.object,
   sliderClassName: PropTypes.string,
   spaceBottomClass: PropTypes.string,
-  // wishlistItem: PropTypes.object
 };
 
 function defaultImage(product) {
@@ -263,4 +229,3 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductGridListSingle);
-// export default ProductGridListSingle;

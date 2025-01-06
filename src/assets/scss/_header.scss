@@ -2459,3 +2459,20 @@
   }
 }
 
+.shop-top-filter {
+  margin-bottom: 50px;
+  
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black !important;
+  opacity: 1; /* Firefox */
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black !important;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+  color: black !important;
+}

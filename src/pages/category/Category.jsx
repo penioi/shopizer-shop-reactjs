@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, setState } from 'react';
 import MetaTags from 'react-meta-tags';
 import { useHistory } from "react-router-dom";
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
@@ -15,42 +15,68 @@ import { multilanguage } from "redux-multilanguage";
 import { setCategoryID } from "../../redux/actions/productActions";
 import ReactPaginate from 'react-paginate';
 import ShopTopFilter from "../../components/product/ShopTopFilter";
+import { useLocation } from "react-router-dom/cjs/react-router-dom";
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, }) => {
+const Category = ({ isLoading, strings, defaultStore, currentLanguageCode, categoryID, setLoader}) => {
+
+
+ 
     const [layout, setLayout] = useState('grid three-column');
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
     const history = useHistory();
-    const [categoryValue, setCategoryValue] = useState('');
-    const [offset, setOffset] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
-    const pageLimit = parseInt(window._env_.APP_PRODUCT_GRID_LIMIT) || 12;
+    const [offset, setOffset] = useState(parseInt(params.get("page")) || 1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [count, setCount] = useState(parseInt(params.get("count"))|| parseInt(window._env_.APP_PRODUCT_GRID_LIMIT) || 30);
     const [productData, setProductData] = useState([]);
     const [totalProduct, setTotalProduct] = useState(0);
-    const [productDetails, setProductDetails] = useState('');
-    const [size, setSize] = useState([]);
     const [availabilityFilters, setAvailabilityFilters] = useState([]);
     const [colorFilters, setColorFilters] = useState([]);
     const [priceFilters, setPriceFilters] = useState([]);
     const [originFilters, setOriginFilters] = useState([]);
-    const [sku, setSku] = useState("");
+    const [sku, setSku] = useState(params.get("sku"));
+    
     let isMounted = true;
-
-    const { pathname } = location;
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        return {
+            offset: parseInt(params.get("page")) || offset,
+            count: parseInt(params.get("count")) || count,
+            sku: parseInt(params.get("sku")) || sku,
+            filters: params.getAll("optionValue"),
+        };
+    };
 
     const getLayout = (layout) => {
         setLayout(layout)
     }
 
-    const createUrlWithParams = () => (`?${isCheckValueAndSetParams('&store=', defaultStore)}
-        ${isCheckValueAndSetParams('&lang=', currentLanguageCode)}
-        ${isCheckValueAndSetParams('&page=', offset)}
-        ${isCheckValueAndSetParams('&count=', pageLimit)}
-        ${isCheckValueAndSetParams('&category=', categoryID)}
-        ${isCheckValueAndSetParams('&sku=', sku)}
-        ${isCheckValueAndSetParams('&optionValues=', [].join())}
-        ${isCheckValueAndSetParams('&manufacturer=', [].join())}`).split(/\n/).map(str => str.trim()).join("");
-
-    const createFiltersUri = (arr) => (arr.map(filter => `&optionValues=${filter.value}`)).join("");
-
+    useEffect(() => {
+        const {offset, sku, count} = getQueryParams();
+        setOffset(offset);
+        setSku(sku);
+        setCount(count)
+        // setAvailabilityFilters(params.filters);
+      }, [location.search]);
+    
+    const createUrlWithParams = () => {
+        const params = new URLSearchParams();
+        params.set('store', defaultStore);
+        params.set('lang', currentLanguageCode);
+        params.set('page', offset);
+        params.set('count', count);
+        params.set('category', categoryID);
+    
+        const addFilters = (filters, key) => {
+            filters.forEach(filter => params.append(key, filter.value));
+        };
+        addFilters(availabilityFilters, 'optionValue');
+        addFilters(colorFilters, 'optionValue');
+        addFilters(priceFilters, 'optionValue');
+        addFilters(originFilters, 'optionValue');
+    
+        return params.toString();
+    };
 
 
     useEffect(() => {
@@ -58,49 +84,37 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         return () => {
             isMounted = false;
         };
-    }, [availabilityFilters, originFilters, priceFilters, colorFilters, sku])
-    useEffect(() => {
-
-        setCategoryValue(categoryID)
-        setSize([])
-        getProductList(categoryID, []);
-    }, [categoryID, offset]);
+    }, [availabilityFilters, originFilters, priceFilters, colorFilters, sku, offset, count])
 
     const getProductList = async () => {
-        setLoader(true)
-        const optionValueUri = `${createFiltersUri([
-            ...availabilityFilters,
-            ...colorFilters,
-            ...priceFilters,
-            ...originFilters
-        ])}`
-        let action = `${constant.ACTION.PRODUCTS}${createUrlWithParams()}${optionValueUri}`;
-        // history.push(optionValueUri);
+        setLoader(true);
+        const newParams = new URLSearchParams(location.search);
+        if (newParams.offset !== offset ||
+                params.count !== count) {
 
-        try {
-            let response = await WebService.get(action);
-            if (isMounted && response) {
-                setCurrentPage(response.totalPages)
-                setProductData(response.products);
-                setTotalProduct(response.recordsTotal)
+            const queryString = createUrlWithParams();
+            let action = `${constant.ACTION.PRODUCTS}?${queryString}`;
+            history.replace({
+                search: `?${queryString}`,
+            });
+            try {
+                let response = await WebService.get(action);
+                if (isMounted && response) {
+                    setTotalPages(response.totalPages)
+                    setProductData(response.products);
+                    setTotalProduct(response.recordsTotal)
+                }
+                setLoader(false)
+            } catch (error) {
+                setLoader(false)
             }
-            setLoader(false)
-        } catch (error) {
-            setLoader(false)
-        }
+        } 
+
+        
     }
 
     return (
         <Fragment>
-            <MetaTags>
-                <title>{productDetails && productDetails.description.title}</title>
-                <meta name="description" content={productDetails && productDetails.description.metaDescription} />
-            </MetaTags>
-
-            <BreadcrumbsItem to={import.meta.env.PUBLIC_URL + '/'}>{strings["Home"]}</BreadcrumbsItem>
-            {productDetails && productDetails.parent !== null && <BreadcrumbsItem onClick={() => setCategoryID(productDetails.parent.id)} to={"/category/" + productDetails.parent.code}>{productDetails.parent.code}</BreadcrumbsItem>}
-            <BreadcrumbsItem to={import.meta.env.PUBLIC_URL + pathname}>{productDetails && productDetails.description.name}</BreadcrumbsItem>
-
             <Layout headerContainerClass="container-fluid"
                 headerPaddingClass="header-padding-2"
                 headerTop="visible">
@@ -110,10 +124,6 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                         {
                             productData.length > 0 ?
                                 (<div className="row">
-                                        {/* shop sidebar */}
-                                        {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
-                                        {/* <ShopSidebar string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" /> */}
-                                    
                                     <div className="col-12">
                                         <ShopTopFilter
                                             avalabilityFilters={availabilityFilters}
@@ -127,15 +137,9 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                             setOriginFilters={setOriginFilters}
                                             setColorFilters={setColorFilters}/>
 
-                                           {/* shop topbar default */}
-                                        {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
-                                        <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} />
+                                        <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset} count={count} sortedProductCount={productData.length} />
 
-                                        {/* shop page content default */}
                                         <ShopProducts strings={strings} layout={layout} products={productData} />
-
-                                        {/* shop product pagination */}
-
 
                                         <div className="pro-pagination-style text-center mt-30">
                                             <ReactPaginate
@@ -143,8 +147,11 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                                 nextLabel={'»'}
                                                 breakLabel={'...'}
                                                 breakClassName={'break-me'}
-                                                pageCount={currentPage}
-                                                onPageChange={(e) => setOffset(e.selected)}
+                                                pageCount={totalPages}
+                                                onPageChange={(e) => {
+                                                    return setOffset(e.selected + 1)
+                                                }}
+                                                forcePage={offset - 1}
                                                 containerClassName={'mb-0 mt-0'}
                                                 activeClassName={'page-item active'}
                                             />

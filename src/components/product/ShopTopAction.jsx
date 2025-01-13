@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { setActiveLayout } from "../../helpers/product";
 
+
 const ShopTopAction = ({
   getLayout,
   getFilterSortParams,
@@ -9,26 +10,28 @@ const ShopTopAction = ({
   sortedProductCount,
   strings,
   offset,
-  pageLimit
+  count
 }) => {
+  const startIndex = (offset - 1) * count + 1;
+  const endIndex =  Math.min(offset * count, productCount);
   return (
     <div className="shop-top-bar mb-35">
       <div className="select-shoing-wrap">
-        {/* <div className="shop-select">
-          <select
-            onChange={e => getFilterSortParams("filterSort", e.target.value)}
-          >
-            <option value="default">Default</option>
-            <option value="priceHighToLow">Price - High to Low</option>
-            <option value="priceLowToHigh">Price - Low to High</option>
-          </select>
-        </div> */}
+        
         <p>
-          {strings["Showing"]} {sortedProductCount < pageLimit ? productCount : sortedProductCount * offset} of {productCount} {strings["result"]}
+          {strings["Showing"]} {startIndex}-{endIndex} of {productCount} {strings["result"]}
         </p>
       </div>
 
       <div className="shop-tab">
+        <select
+          onChange={e => getFilterSortParams("filterSort", e.target.value)}>
+          <option value="default">Sort by</option>
+          <option value="priceHighToLow">Price - High to Low</option>
+          <option value="priceLowToHigh">Price - Low to High</option>
+          <option value="quantityHighToLow">Quantity - High to Low</option>
+          <option value="quantityLowToHigh">Quantity - Low to High</option>
+        </select>
         <button
           onClick={e => {
             getLayout("grid two-column");

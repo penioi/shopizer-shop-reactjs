@@ -638,8 +638,8 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
     if (paymentType === "INVOICE") {
       return {
         "paymentType": "INVOICE",
-        "transactionType": "AUTHORIZECAPTURE",
-        "paymentModule": "moneyorder",
+        "transactionType": "INIT",
+        "paymentModule": "invoice",
         "amount": shippingQuote[shippingQuote.length - 1].value
       }
     }
@@ -869,7 +869,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-select mb-20">
                             <label>{strings["State"]}</label>
-                            <select onBlur={changeAddress()} onChange={(e) => props.onChange(e.target.value)} value={props.value}>
+                            <select onBlur={changeAddress()} value={""}>
                               <option>{strings["State / province"]}</option>
                               {
                                 stateData.map((data, i) => {

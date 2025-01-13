@@ -35,7 +35,7 @@ const OrderConfirm = ({ location, orderID, strings, merchant }) => {
               <div className="col-xl-7 col-lg-8 text-center">
                 <div className="error">
                   <h3>{strings["Order Completed"]}</h3>
-                  <h2>{strings["Thank you for ordering from importa"]}</h2>
+                  <h2>{"Thank you for ordering from the materialist"}</h2>
                   <p>
                     {strings["Your order id is"]} <b>{orderID}</b> <br />{strings["An email with you order details has been sent to"]} {getLocalData('order-email')}
                   </p>

@@ -6,7 +6,7 @@ const Logo = ({ imageUrl, logoClass }) => {
   return (
     <div className={`${logoClass ? logoClass : ""}`}>
       <Link to="/">
-        <img alt="Margarita" src={imageUrl} />
+        <img alt="the materialist logo" src={imageUrl} />
       </Link>
     </div>
   );

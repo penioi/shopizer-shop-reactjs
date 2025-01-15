@@ -88,7 +88,7 @@ const Header = ({
           <div className="row">
             <div className="col-xl-2 col-lg-2 col-md-6 col-8 d-flex align-items-center">
               {
-                <Logo imageUrl="https://www.thematerialist.co/sp/decorations/layout/fabricsociety/images/logo.png" logoClass="logo" />
+                <Logo imageUrl="assets/img/logo/logo.png" logoClass="logo" />
               }
 
             </div>

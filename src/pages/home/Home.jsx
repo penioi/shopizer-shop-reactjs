@@ -16,12 +16,11 @@ const Home = ({ merchant }) => {
         headerPaddingClass="header-padding-2"
         headerTop="visible"
       >
-        {/* <section className="f-screen-section  f-screen-section--hero">
-          
-          <img className="hero-image" src="assets/img/promo/banner2.jpg" />
-        </section> */}
-        <section className="f-screen-section f-screen-section--bg ">
+        <section className="f-screen-section  f-screen-section--hero">
           <div className="decoration-screen"></div>
+          <img className="hero-image" src="assets/img/promo/banner2.jpg" />
+        </section>
+        <section className="f-screen-section ">
           <div className="d-flex mh-100 h-100 row">
             <div className="main-page-circle col-md-6 "><span className="show-default"> buy</span> <span className="show-on-hover"> <img src="assets/img/promo/flower1.png" /></span></div>
             <div className="main-page-circle col-md-6"><span className="show-default">sell</span> <span className="show-on-hover"> <img src="assets/img/promo/flower2.png" /></span></div>

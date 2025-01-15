@@ -2500,34 +2500,15 @@
   }
 }
 
-@keyframes slideInFromBottom {
-  0% {
-    opacity: 0;
-    transform: translate(0, 150%); /* Start below the container */
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, 0); /* Slide into view */
-  }
-}
-
 .decoration-screen {
   width: 100%;
-  z-index: 1;
+  height: 100vh;
+  z-index: -1;
   display: block;
   position: absolute;
   animation: 5s ease-out 0s 1 disappearFromOpaque;
   left: 0;
   top: 0;
-  height: 100vh;
-  pointer-events: none; /* Disable interactions */
-}
-
-.f-screen-section--bg {
-  background: url('assets/img/promo/banner2.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin-bottom: 200px;
 }
 
 
@@ -2544,12 +2525,11 @@
   display: flex;
   overflow: hidden;
   cursor: pointer;
-
-
+;
   span {
     height: calc(100vw / 4);
     width: calc(100vw / 4);
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(0, 0, 0, 0.1);
     display: flex;
     border-radius: 50%;
     align-items: center;
@@ -2558,7 +2538,6 @@
     display: inline-flex;
     transition: background-color 300ms linear;
     width: 50%;
-    z-index: 3;
     @media screen and (max-width: 768px) {
 
       height: 350px;
@@ -2571,25 +2550,21 @@
     position: absolute;
     transition-property: opacity;
     transition-duration: 3s;
-    z-index: 2;
+    z-index: -1;
     background: none;
   }
   &:hover {
     span {
-      color: black;
+      color: white;
       background-color: rgba(0, 0, 0, 0);
     }
     .show-on-hover {
-      opacity: 0.9;
+      opacity: 1;
       
     }
   }
-
 }
-.main-page-circle  {
 
-  animation: slideInFromBottom 2s ease-in-out;
-}
 
 body {
   overflow-x: clip;
